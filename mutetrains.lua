@@ -1,4 +1,4 @@
-#mute trains
+--mute trains
 mutetrains = CreateFrame("FRAME")
 mutetrains:RegisterEvent("PLAYER_LOGIN");
 mutetrains:SetScript('OnEvent', function()

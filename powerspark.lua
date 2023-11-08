@@ -104,35 +104,18 @@ frame:SetScript("OnEvent", function(self, event, ...)
                     return
                 end
                 self.rate = now + 0.02
-                if self.hide(self.key) then
-                    self.spark:SetAlpha(0)
-                elseif
-                    self.wait
-                    and self.wait > now
-                    and (UnitPowerType("player") == 0 or self.key == "druid")
-                then
-                    self.spark:SetAlpha(1)
-                    self.spark:SetPoint(
-                        "CENTER",
-                        self,
-                        "LEFT",
-                        self:GetWidth() * (self.wait - now) / 5,
-                        0
-                    )
-                elseif self.timer then
-                    self.spark:SetAlpha(1)
-                    self.spark:SetPoint(
-                        "CENTER",
-                        self,
-                        "LEFT",
-                        self:GetWidth()
-                            * (
-                                mod(now - self.timer, self.interval)
-                                / self.interval
-                            ),
-                        0
-                    )
-                end
+				self.spark:SetAlpha(1)
+				self.spark:SetPoint(
+					"CENTER",
+					self,
+					"LEFT",
+					self:GetWidth()
+						* (
+							mod(now - self.timer, self.interval)
+							/ self.interval
+						),
+					0
+				)
             end)
             self[key] = power
         end

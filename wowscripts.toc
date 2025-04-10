@@ -1,4 +1,4 @@
-## Interface: 11403
+## Interface: 11507
 ## Title: wowscripts
 config.lua
 formatfix.lua
@@ -6,9 +6,6 @@ simplecoord.lua
 crapaway.lua
 hhk.lua
 garbage.lua
-mutetrains.lua
-
-## Classic Era
-#targethealth.lua
-#powerspark.lua
-#ranger.lua
+targethealth.lua
+powerspark.lua
+ranger.lua

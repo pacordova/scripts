@@ -1,7 +1,7 @@
 ## Interface: 11507
 ## Title: wowscripts
 
-config.lua
+misc.lua
 unitframes.lua
 coordinates.lua
 crapaway.lua
@@ -9,4 +9,3 @@ hotkeys.lua
 garbage.lua
 powerspark.lua
 ranger.lua
-volume.lua

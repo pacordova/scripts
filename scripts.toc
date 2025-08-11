@@ -4,8 +4,7 @@
 misc.lua
 unitframes.lua
 coordinates.lua
-crapaway.lua
 hotkeys.lua
-garbage.lua
 powerspark.lua
 ranger.lua
+gray.lua

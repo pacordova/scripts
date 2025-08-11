@@ -1,6 +1,6 @@
 -- MIT License
 
--- Copyright (c) 2020 Olle Månsson, draon12
+-- Copyright (c) 2025 Olle Månsson, draon12, pacordova
 
 -- Permission is hereby granted, free of charge, to any person obtaining a copy
 -- of this software and associated documentation files (the "Software"), to deal

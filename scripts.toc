@@ -4,8 +4,9 @@ config.lua
 formatfix.lua
 simplecoord.lua
 crapaway.lua
-hhk.lua
+hotkeys.lua
 garbage.lua
 targethealth.lua
 powerspark.lua
 ranger.lua
+volume.lua

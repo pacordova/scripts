@@ -2,7 +2,7 @@
 ## Title: wowscripts
 
 config.lua
-formatfix.lua
+unitframes.lua
 coordinates.lua
 crapaway.lua
 hotkeys.lua

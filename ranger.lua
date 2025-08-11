@@ -30,10 +30,14 @@ local function colorize(self)
    local id = self.action
    if not id then return end
    local usable, oom = IsUsableAction(id)
-   if oom or not usable then
-      self.icon:SetVertexColor(35/255, 45/255, 75/255)
-   elseif isoor(self) then
-      self.icon:SetVertexColor(48/255, 76/255, 30/255)
+   if not usable then
+      if oom then
+         self.icon:SetVertexColor(35/255, 45/255, 75/255)
+      elseif isoor(self) then
+         self.icon:SetVertexColor(48/255, 76/255, 30/255)
+      else
+         self.icon:SetVertexColor(48/255, 76/255, 30/255)
+      end
    else
       self.icon:SetVertexColor(1, 1, 1)
    end

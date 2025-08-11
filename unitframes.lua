@@ -20,47 +20,6 @@
 -- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 -- SOFTWARE.
 
-local BarFormatFuncs={
-    [PlayerFrameHealthBar]=function(self,textstring,val,min,max)
-        textstring:SetText(AbbreviateLargeNumbers(val));
-    end;
-    [TargetFrameHealthBar]=function(self,textstring,val,min,max)
-        if not FormatFix_UsePercent then textstring:SetText(AbbreviateLargeNumbers(val));
-        elseif max==100 then textstring:SetText(AbbreviateLargeNumbers(val).."%");
-        else textstring:SetFormattedText("%s || %.0f%%",AbbreviateLargeNumbers(val),100*val/max); end
-    end;
-    [PetFrameHealthBar]=function(self,textstring,val,min,max)
-        textstring:SetText(AbbreviateLargeNumbers(val));
-    end;
-    [PetFrameManaBar]=function(self,textstring,val,min,max)
-        textstring:SetText(AbbreviateLargeNumbers(val));
-		textstring:SetPoint("CENTER", PetFrame, "TOPLEFT", 82, -37);
-    end;
-}
-
-BarFormatFuncs[PlayerFrameManaBar]=BarFormatFuncs[PlayerFrameHealthBar];
-BarFormatFuncs[TargetFrameManaBar]=BarFormatFuncs[PlayerFrameHealthBar];
-
--- focus frame
-if FocusFrameHealthBar ~= nil then
-	BarFormatFuncs[FocusFrameHealthBar]=BarFormatFuncs[PlayerFrameHealthBar];
-	BarFormatFuncs[FocusFrameManaBar]=BarFormatFuncs[PlayerFrameHealthBar];
-end
-
-hooksecurefunc("TextStatusBar_UpdateTextStringWithValues",function(self,...)
-	if BarFormatFuncs[self] then
-		if GetCVar("statusTextDisplay") == "NUMERIC" then
-			BarFormatFuncs[self](self,...);
-			(...):Show();
-		end
-	end
-end);
-
----------------------------------------------
-
-local ADDON_NAME = ...
-
-
 ---------------------------------------------
 -- HealthBar
 ---------------------------------------------
@@ -72,7 +31,6 @@ TargetFrameHealthBarTextLeft:SetPoint("LEFT", TargetFrameTextureFrame, "LEFT", 8
 
 TargetFrameTextureFrame:CreateFontString("TargetFrameHealthBarTextRight", "BORDER", "TextStatusBarText")
 TargetFrameHealthBarTextRight:SetPoint("RIGHT", TargetFrameTextureFrame, "RIGHT", -110, 3)
-
 
 ---------------------------------------------
 -- ManaBar
@@ -86,22 +44,57 @@ TargetFrameManaBarTextLeft:SetPoint("LEFT", TargetFrameTextureFrame, "LEFT", 8, 
 TargetFrameTextureFrame:CreateFontString("TargetFrameManaBarTextRight", "BORDER", "TextStatusBarText")
 TargetFrameManaBarTextRight:SetPoint("RIGHT", TargetFrameTextureFrame, "RIGHT", -110, -8)
 
-
 ---------------------------------------------
 -- INITIALIZE
 ---------------------------------------------
+local ADDON_NAME = ...
 local frame = CreateFrame("frame")
 frame:RegisterEvent("ADDON_LOADED")
 frame:SetScript("OnEvent", function(self, event, addonName)
-    if ( event == "ADDON_LOADED" and addonName == ADDON_NAME ) then
-        TargetHealthDB = TargetHealthDB or { version=1, forcePercentages=false }
-
-        TargetFrameHealthBar.LeftText = TargetFrameHealthBarTextLeft;
-        TargetFrameHealthBar.RightText = TargetFrameHealthBarTextRight
-        TargetFrameManaBar.LeftText = TargetFrameManaBarTextLeft;
-        TargetFrameManaBar.RightText = TargetFrameManaBarTextRight;
-
-        UnitFrameHealthBar_Initialize("target", TargetFrameHealthBar, TargetFrameHealthBarText, true);
-        UnitFrameManaBar_Initialize("target", TargetFrameManaBar, TargetFrameManaBarText, true);
-    end
+ if ( event == "ADDON_LOADED" and addonName == ADDON_NAME ) then
+  TargetFrameHealthBar.LeftText = TargetFrameHealthBarTextLeft;
+  TargetFrameHealthBar.RightText = TargetFrameHealthBarTextRight
+  TargetFrameManaBar.LeftText = TargetFrameManaBarTextLeft;
+  TargetFrameManaBar.RightText = TargetFrameManaBarTextRight;
+  UnitFrameHealthBar_Initialize("target", TargetFrameHealthBar, TargetFrameHealthBarText, true);
+  UnitFrameManaBar_Initialize("target", TargetFrameManaBar, TargetFrameManaBarText, true);
+ end
 end)
+
+---------------------------------------------
+-- FormatFix
+---------------------------------------------
+local BarFormatFuncs={
+ [PlayerFrameHealthBar]=function(self,textstring,val,min,max)
+  textstring:SetText(AbbreviateLargeNumbers(val));
+ end;
+ [TargetFrameHealthBar]=function(self,textstring,val,min,max)
+  if not FormatFix_UsePercent then textstring:SetText(AbbreviateLargeNumbers(val));
+  elseif max==100 then textstring:SetText(AbbreviateLargeNumbers(val).."%");
+  else textstring:SetFormattedText("%s || %.0f%%",AbbreviateLargeNumbers(val),100*val/max); end
+ end;
+ [PetFrameHealthBar]=function(self,textstring,val,min,max)
+  textstring:SetText(AbbreviateLargeNumbers(val));
+ end;
+ [PetFrameManaBar]=function(self,textstring,val,min,max)
+  textstring:SetText(AbbreviateLargeNumbers(val));
+  textstring:SetPoint("CENTER", PetFrame, "TOPLEFT", 82, -37);
+ end;
+}
+
+BarFormatFuncs[PlayerFrameManaBar]=BarFormatFuncs[PlayerFrameHealthBar];
+BarFormatFuncs[TargetFrameManaBar]=BarFormatFuncs[PlayerFrameHealthBar];
+
+if FocusFrameHealthBar ~= nil then
+ BarFormatFuncs[FocusFrameHealthBar]=BarFormatFuncs[PlayerFrameHealthBar];
+ BarFormatFuncs[FocusFrameManaBar]=BarFormatFuncs[PlayerFrameHealthBar];
+end
+
+hooksecurefunc("TextStatusBar_UpdateTextStringWithValues",function(self,...)
+ if BarFormatFuncs[self] then
+  if GetCVar("statusTextDisplay") == "NUMERIC" then
+   BarFormatFuncs[self](self,...);
+   (...):Show();
+  end
+ end
+end);

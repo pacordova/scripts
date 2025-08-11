@@ -21,53 +21,53 @@
 local class = select(2, UnitClass("player"))
 local frame = CreateFrame("Frame")
 for _, item in pairs({
-   "PLAYER_ENTERING_WORLD",
-   "UNIT_AURA",
-   "UPDATE_SHAPESHIFT_FORM",
-   "UNIT_SPELLCAST_SUCCEEDED",
-   "UNIT_POWER_FREQUENT",
+ "PLAYER_ENTERING_WORLD",
+ "UNIT_AURA",
+ "UPDATE_SHAPESHIFT_FORM",
+ "UNIT_SPELLCAST_SUCCEEDED",
+ "UNIT_POWER_FREQUENT",
 }) do
 frame:RegisterEvent(item, "player")
 end
 frame:SetScript("OnEvent", function(self, event, ...)
-   if event == "PLAYER_ENTERING_WORLD" then
-      function
-      self.cure(key)
-      local type = UnitPowerType("player")
-      if key == "druid" then
-         type = 0
-      end
-      return UnitPower("player", type), type
-   end
-   function
-   self.rest(key, event, unit, powerType)
-   local cure, type = self.cure(key)
-   if event == "UPDATE_SHAPESHIFT_FORM" and class == "DRUID" then
-      self[key].cure = cure
-      self[key].timer = GetTime()
-   elseif event == "UNIT_POWER_FREQUENT" and unit == "player" then
-      if cure > self[key].cure then
-         self[key].cure = cure
-         self[key].timer = GetTime()
-         PowerSparkDB[key].timer = self[key].timer
-      end
-   elseif event == "UNIT_SPELLCAST_SUCCEEDED" and unit == "player" then
-      if cure < self[key].cure and type == 0 then
-         self[key].wait = GetTime() + 5
-      end
-      self[key].cure = cure
-   end
+ if event == "PLAYER_ENTERING_WORLD" then
+  function
+  self.cure(key)
+  local type = UnitPowerType("player")
+  if key == "druid" then
+   type = 0
+  end
+  return UnitPower("player", type), type
+ end
+ function
+ self.rest(key, event, unit, powerType)
+ local cure, type = self.cure(key)
+ if event == "UPDATE_SHAPESHIFT_FORM" and class == "DRUID" then
+  self[key].cure = cure
+  self[key].timer = GetTime()
+ elseif event == "UNIT_POWER_FREQUENT" and unit == "player" then
+  if cure > self[key].cure then
+   self[key].cure = cure
+   self[key].timer = GetTime()
+   PowerSparkDB[key].timer = self[key].timer
+  end
+ elseif event == "UNIT_SPELLCAST_SUCCEEDED" and unit == "player" then
+  if cure < self[key].cure and type == 0 then
+   self[key].wait = GetTime() + 5
+  end
+  self[key].cure = cure
+ end
 end
 function
 self.init(parent, key)
 if not parent or self[key] then
-   return
+ return
 end
 if not PowerSparkDB then
-   PowerSparkDB = {}
+ PowerSparkDB = {}
 end
 if not PowerSparkDB[key] then
-   PowerSparkDB[key] = {}
+ PowerSparkDB[key] = {}
 end
 local power = CreateFrame("StatusBar", nil, parent)
 power:SetWidth(parent.width or parent:GetWidth())
@@ -95,66 +95,66 @@ or type == 3
 and cure >= UnitPowerMax("player")
 and not IsStealthed()
 and (not UnitCanAttack("player", "target") or UnitIsDeadOrGhost(
-   "target"
+ "target"
 ))
             end
             power:HookScript("OnUpdate", function(self)
-               local now = GetTime()
-               if now < self.rate then
-                  return
-               end
-               self.rate = now + 0.02
-               self.spark:SetAlpha(1)
-               self.spark:SetPoint(
-                  "CENTER",
-                  self,
-                  "LEFT",
-                  self:GetWidth()
-                  * (
-                     mod(now - self.timer, self.interval)
-                     / self.interval
-                  ),
-                  0
-               )
+             local now = GetTime()
+             if now < self.rate then
+              return
+             end
+             self.rate = now + 0.02
+             self.spark:SetAlpha(1)
+             self.spark:SetPoint(
+              "CENTER",
+              self,
+              "LEFT",
+              self:GetWidth()
+              * (
+               mod(now - self.timer, self.interval)
+               / self.interval
+              ),
+              0
+             )
             end)
             self[key] = power
-         end
-         if SUFUnitplayer and SUFUnitplayer.powerBar then
+           end
+           if SUFUnitplayer and SUFUnitplayer.powerBar then
             self.init(SUFUnitplayer.powerBar, "default")
             if class == "DRUID" and SUFUnitplayer.druidBar then
-               self.init(SUFUnitplayer.druidBar, "druid")
+             self.init(SUFUnitplayer.druidBar, "druid")
             end
-         elseif ElvUF_Player and ElvUF_Player.Power then
+           elseif ElvUF_Player and ElvUF_Player.Power then
             self.init(ElvUF_Player.Power, "default")
-         elseif StatusBars2_playerPowerBar then
+           elseif StatusBars2_playerPowerBar then
             self.init(StatusBars2_playerPowerBar, "default")
-         else
+           else
             self.init(PlayerFrameManaBar, "default")
-         end
-         if class == "DRUID" and DruidBarFrame then
+           end
+           if class == "DRUID" and DruidBarFrame then
             DruidBarFrame.width = DruidBarKey.width - 4
             DruidBarFrame.health = DruidBarKey.height - 4
             self.init(DruidBarFrame, "druid")
-         end
-         if class == "DRUID" and BC_DruidBar then
+           end
+           if class == "DRUID" and BC_DruidBar then
             BC_DruidBar.width = BC_DruidBar.Mana:GetWidth() - 4
             BC_DruidBar.health = BC_DruidBar.Mana:GetHeight() - 4
             self.init(BC_DruidBar, "druid")
-         end
-      elseif event == "UNIT_AURA" and class == "ROGUE" and unit == "player" then
-         self.interval = 2
-         local i = 1
-         while UnitBuff("player", i) do
+           end
+          elseif event == "UNIT_AURA" and class == "ROGUE" and unit == "player" then
+           self.interval = 2
+           local i = 1
+           while UnitBuff("player", i) do
             if select(10, UnitBuff("player", i)) == 13750 then
-               self.interval = 1
-               break
+             self.interval = 1
+             break
             end
             i = i + 1
-         end
-      elseif self.rest then
-         self.rest("default", event, ...)
-         if self.druid then
+           end
+          elseif self.rest then
+           self.rest("default", event, ...)
+           if self.druid then
             self.rest("druid", event, ...)
-         end
-      end
-   end)
+           end
+          end
+         end)

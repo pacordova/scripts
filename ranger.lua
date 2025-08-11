@@ -18,29 +18,25 @@
 -- ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 local function isoor(x)
-   local ir = IsActionInRange(x.action)
-   if ir == nil then 
-      return false 
-   else 
-      return not ir 
-   end
+ local ir = IsActionInRange(x.action)
+ if ir == nil then return false else return not ir end
 end
 
 local function colorize(self)
-   local id = self.action
-   if not id then return end
-   local usable, oom = IsUsableAction(id)
-   if not usable then
-      if oom then
-         self.icon:SetVertexColor(35/255, 45/255, 75/255)
-      elseif isoor(self) then
-         self.icon:SetVertexColor(48/255, 76/255, 30/255)
-      else
-         self.icon:SetVertexColor(48/255, 76/255, 30/255)
-      end
-   else
-      self.icon:SetVertexColor(1, 1, 1)
-   end
+ local id = self.action
+ if not id then return end
+ local usable, oom = IsUsableAction(id)
+ if not usable then
+  if oom then
+   self.icon:SetVertexColor(35/255, 45/255, 75/255)
+  elseif isoor(self) then
+   self.icon:SetVertexColor(48/255, 76/255, 30/255)
+  else
+   self.icon:SetVertexColor(48/255, 76/255, 30/255)
+  end
+ else
+  self.icon:SetVertexColor(1, 1, 1)
+ end
 end
 
 hooksecurefunc("ActionButton_UpdateRangeIndicator", colorize)

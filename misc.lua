@@ -25,14 +25,14 @@ DAMAGE_TEXT_FONT = "Fonts\\PEPSI.ttf"
 local main = CreateFrame('Frame');
 main:RegisterEvent('PLAYER_LOGIN');
 main:SetScript('OnEvent', function()
-   PlayerFrame:ClearAllPoints()
-   PlayerFrame:SetPoint("CENTER", UIParent, "CENTER", -500, 300)
-   PlayerFrame:SetUserPlaced(true);
-   TargetFrame:ClearAllPoints() 
-   TargetFrame:SetPoint("CENTER", UIParent, "CENTER", -250, 300) 
-   TargetFrame:SetUserPlaced(true)
-   FriendsMicroButton:Hide()
-   ChatFrameChannelButton:Hide()
+ PlayerFrame:ClearAllPoints()
+ PlayerFrame:SetPoint("CENTER", UIParent, "CENTER", -500, 300)
+ PlayerFrame:SetUserPlaced(true);
+ TargetFrame:ClearAllPoints() 
+ TargetFrame:SetPoint("CENTER", UIParent, "CENTER", -250, 300) 
+ TargetFrame:SetUserPlaced(true)
+ FriendsMicroButton:Hide()
+ ChatFrameChannelButton:Hide()
 end)
 
 -- Volume Slider
@@ -47,7 +47,7 @@ vol:SetValue(C_CVar.GetCVar("Sound_MasterVolume")*100)
 vol:SetValueStep(1)
 vol:SetObeyStepOnDrag(true)
 vol:SetScript("OnValueChanged", function(self, val)
-   SetCVar("Sound_MasterVolume", val/100)
+ SetCVar("Sound_MasterVolume", val/100)
 end)
 
 vol.Low:SetText('0')
@@ -61,7 +61,7 @@ helm:SetPoint("CENTER", PaperDollItemsFrame, "CENTER", -115, 5)
 helm:SetChecked(ShowingHelm())
 helm:Show()
 helm:SetScript("OnClick", function(self, val)
-   ShowHelm(self:GetChecked())
+ ShowHelm(self:GetChecked())
 end)
 
 -- Show Cloak
@@ -70,5 +70,5 @@ cloak:SetPoint("CENTER", PaperDollItemsFrame, "CENTER", -115, -15)
 cloak:SetChecked(ShowingCloak())
 cloak.Text:SetText("Cloak")
 cloak:SetScript("OnClick", function(self, val)
-   ShowCloak(self:GetChecked())
+ ShowCloak(self:GetChecked())
 end)

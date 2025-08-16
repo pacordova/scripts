@@ -1,11 +1,10 @@
 ## Interface: 11507
 ## Title: scripts
-
-misc.lua
-unitframes.lua
+autoloot.lua
 coordinates.lua
+gray.lua
 hotkeys.lua
+misc.lua
 powerspark.lua
 ranger.lua
-gray.lua
-autoloot.lua
+unitframes.lua

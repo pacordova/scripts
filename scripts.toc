@@ -1,5 +1,5 @@
 ## Interface: 11507
-## Title: wowscripts
+## Title: scripts
 
 misc.lua
 unitframes.lua
@@ -8,3 +8,4 @@ hotkeys.lua
 powerspark.lua
 ranger.lua
 gray.lua
+autoloot.lua

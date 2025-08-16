@@ -29,11 +29,11 @@ local function colorize(self)
  if not usable then
   if oom then
    self.icon:SetVertexColor(35/255, 45/255, 75/255)
-  elseif isoor(self) then
-   self.icon:SetVertexColor(48/255, 76/255, 30/255)
   else
    self.icon:SetVertexColor(48/255, 76/255, 30/255)
   end
+ elseif isoor(self) then
+  self.icon:SetVertexColor(48/255, 76/255, 30/255)
  else
   self.icon:SetVertexColor(1, 1, 1)
  end

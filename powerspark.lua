@@ -21,6 +21,7 @@
 -- SOFTWARE.
 
 local class = select(2, UnitClass("player"))
+if class == "WARRIOR" then return end
 
 local frame = CreateFrame("Frame")
 frame:RegisterEvent("PLAYER_ENTERING_WORLD", "player")

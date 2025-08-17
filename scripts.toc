@@ -1,10 +1,12 @@
 ## Interface: 11507
 ## Title: scripts
+cvar.lua
+misc.lua
+targethealth.lua
+formatfix.lua
 autoloot.lua
 coordinates.lua
 gray.lua
 hotkeys.lua
-misc.lua
 powerspark.lua
 ranger.lua
-unitframes.lua

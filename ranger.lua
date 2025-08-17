@@ -1,4 +1,4 @@
--- Copyright © 2025 pacordova
+-- Copyright 2025 pacordova
 
 -- Redistribution and use of this script, with or without modification, is
 -- permitted provided that the following conditions are met:

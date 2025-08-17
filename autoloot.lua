@@ -43,6 +43,3 @@ frame:SetScript("OnEvent", function(self, event, arg1)
 end)
 
 frame:RegisterEvent("LOOT_READY")
-
--- Speed up built-in autolooting so it can play with us when there's a lot of loot
-SetCVar("autoLootRate", "0")

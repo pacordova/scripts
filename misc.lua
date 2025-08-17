@@ -1,4 +1,4 @@
--- Copyright © 2025 pacordova
+-- Copyright 2025 pacordova
 
 -- Redistribution and use of this script, with or without modification, is
 -- permitted provided that the following conditions are met:
@@ -16,11 +16,6 @@
 -- WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 -- OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 -- ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
---SetCVAR("gxWindowedResolution", "1920x1080")
-SetCVar("UIScale", 768/1080)
-SetCVar("cameraDistanceMaxZoomFactor", 1.5)
-DAMAGE_TEXT_FONT = "Fonts\\PEPSI.ttf"
 
 local frame = CreateFrame('Frame');
 frame:RegisterEvent('PLAYER_LOGIN');
@@ -71,4 +66,36 @@ cloak:SetChecked(ShowingCloak())
 cloak.Text:SetText("Cloak")
 cloak:SetScript("OnClick", function(self, val)
    ShowCloak(self:GetChecked())
+end)
+
+-- CrapAway
+if C_Container ~= nil then
+   GetContainerNumSlots = C_Container.GetContainerNumSlots
+   GetContainerItemLink = C_Container.GetContainerItemLink
+   UseContainerItem     = C_Container.UseContainerItem
+end
+
+frmcrapaway = CreateFrame("FRAME")
+frmcrapaway:RegisterEvent("MERCHANT_SHOW");
+frmcrapaway:SetScript('OnEvent', function()
+   local caSlots,caLink,caQuality;
+   local i=0,j;
+   local _,caClass=UnitClass("player");
+   repeat
+      if not(GetContainerNumSlots(i)==nil)then
+         caSlots=GetContainerNumSlots(i);
+         j=1;
+         repeat
+            caLink=GetContainerItemLink(i,j);
+            if not(caLink==nil)then                        
+               _,_,caQuality=GetItemInfo(caLink);
+               if(caQuality==0)then
+                  UseContainerItem(i,j);
+               end
+            end
+            j=j+1;
+         until(j>=caSlots+1)
+      end
+      i=i+1;
+   until(i>=5)
 end)

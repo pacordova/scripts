@@ -26,18 +26,25 @@ local function colorize(self)
    local id = self.action
    if not id then return end
    local usable, oom = IsUsableAction(id)
-   if not usable then
-      if oom then
-         self.icon:SetVertexColor(35/255, 45/255, 75/255)
-      else
-         self.icon:SetVertexColor(48/255, 76/255, 30/255)
-      end
+   local _, cooldown = GetActionCooldown(id)
+   if cooldown > 2 then
+      self.icon:SetDesaturated(true)
+      self.icon:SetVertexColor(1, 1, 1, 1)
+   elseif oom then
+      self.icon:SetDesaturated(true)
+      self.icon:SetVertexColor(0.1, 0.3, 1, 1)
+   elseif not usable then
+      self.icon:SetDesaturated(false)
+      self.icon:SetVertexColor(0.4, 0.4, 0.4, 1)
    elseif isoor(self) then
-      self.icon:SetVertexColor(48/255, 76/255, 30/255)
+      self.icon:SetDesaturated(true)
+      self.icon:SetVertexColor(1, 0.3, 0.1, 1)
    else
-      self.icon:SetVertexColor(1, 1, 1)
+      self.icon:SetDesaturated(false)
+      self.icon:SetVertexColor(1, 1, 1, 1)
    end
 end
 
 hooksecurefunc("ActionButton_UpdateRangeIndicator", colorize)
 hooksecurefunc("ActionButton_UpdateUsable", colorize)
+hooksecurefunc("ActionButton_UpdateCooldown", colorize)

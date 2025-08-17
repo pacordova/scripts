@@ -10,5 +10,5 @@ local MY_CVARS = {
    gxWindowedResolution = "1920x1080",
 }
 
-for k, v in pairs(MY_GLOBALS) do _G[k] = v end
-for k, v in pairs(MY_CVARS) do SetCVar(k, v) end
+for k,v in pairs(MY_GLOBALS) do _G[k] = v end
+for k,v in pairs(MY_CVARS) do SetCVar(k, v) end

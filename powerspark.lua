@@ -21,8 +21,8 @@
 -- SOFTWARE.
 
 local class = select(2, UnitClass("player"))
-local frame = CreateFrame("Frame")
 
+local frame = CreateFrame("Frame")
 frame:RegisterEvent("PLAYER_ENTERING_WORLD", "player")
 frame:RegisterEvent("UNIT_AURA", "player")
 frame:RegisterEvent("UPDATE_SHAPESHIFT_FORM", "player")
@@ -57,15 +57,9 @@ frame:SetScript("OnEvent", function(self, event, ...)
          end
       end
       function self.init(parent, key)
-         if not parent or self[key] then
-            return
-         end
-         if not PowerSparkDB then
-            PowerSparkDB = {}
-         end
-         if not PowerSparkDB[key] then
-            PowerSparkDB[key] = {}
-         end
+         if not parent or self[key] then return end
+         if not PowerSparkDB then PowerSparkDB = {} end
+         if not PowerSparkDB[key] then PowerSparkDB[key] = {} end
          local power = CreateFrame("StatusBar", nil, parent)
          power:SetWidth(parent.width or parent:GetWidth())
          power:SetHeight(parent.height or parent:GetHeight())
@@ -116,16 +110,6 @@ frame:SetScript("OnEvent", function(self, event, ...)
          self[key] = power
       end
       self.init(PlayerFrameManaBar, "default")
-      if class == "DRUID" and DruidBarFrame then
-         DruidBarFrame.width = DruidBarKey.width - 4
-         DruidBarFrame.health = DruidBarKey.height - 4
-         self.init(DruidBarFrame, "druid")
-      end
-      if class == "DRUID" and BC_DruidBar then
-         BC_DruidBar.width = BC_DruidBar.Mana:GetWidth() - 4
-         BC_DruidBar.health = BC_DruidBar.Mana:GetHeight() - 4
-         self.init(BC_DruidBar, "druid")
-      end
    elseif event == "UNIT_AURA" and class == "ROGUE" and unit == "player" then
       self.interval = 2
       local i = 1

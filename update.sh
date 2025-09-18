@@ -83,16 +83,20 @@ repos=(
 )
 for x in ${repos[@]}; do _fetch_tag_gh "$x"; done
 
-# Move some stuff
-#mv -f shirsig-aux-addon-* aux-addon
-mv -f shirsig-unitscan-* unitscan
-mv -f Resike-TrinketMenu-* TrinketMenu
-#mv -f voidzone-gnosis-* Gnosis
-#mv -f TheMouseNest-Auctionator-* Auctionator
-mv -f Vysci-LFG-Bulletin-Board-*/LFGBulletinBoard LFGBulletinBoard
+# Rename directories
+[ -d *"-aux-addon-"*    ] && mv *"-aux-addon-"*    aux-addon
+[ -d *"-unitscan-"*     ] && mv *"-unitscan-"*     unitscan
+[ -d *"-TrinketMenu-"*  ] && mv *"-TrinketMenu-"*  TrinketMenu
+[ -d *"-gnosis-"*       ] && mv *"-gnosis-"*       Gnosis
+[ -d *"-Auctionator-*"  ] && mv *"-Auctionator-"*  Auctionator
+[ -d */LFGBulletinBoard ] && mv */LFGBulletinBoard LFGBulletinBoard
 
-# Check Grid2 status
-if [ -d Grid2 ]; then rm -fr Grid2.bak; else mv Grid2.bak/* .; rmdir Grid2.bak; fi
+# If Grid2 successfully downloaded, delete backup, otherwise restore backup
+if [ -d Grid2 ]; then 
+    rm -fr Grid2.bak
+else 
+    mv Grid2.bak/* . && rmdir Grid2.bak
+fi
 
 # Cleanup
 rm -fr Vysci-LFG-Bulletin-Board-*

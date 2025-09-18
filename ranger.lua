@@ -27,7 +27,7 @@ local function colorize(self)
    if not id then return end
    local usable, oom = IsUsableAction(id)
    local _, cooldown = GetActionCooldown(id)
-   if cooldown > 2 then
+   if cooldown > 1.5 then
       self.icon:SetDesaturated(true)
       self.icon:SetVertexColor(1, 1, 1, 1)
    elseif oom then

@@ -1,68 +1,101 @@
 #!/bin/bash
 
+cd `dirname "$0"`/..
 
-if [ "$#" -eq 0 ]; then
+_fetch_release_gh(){
+  printf "%s\n" "$1"
+  curl -s "https://api.github.com/repos/$1/releases/latest" \
+  | awk '/browser_download_url.*zip/{print $2}' \
+  | tr -d , \
+  | xargs curl -L -# @- \
+  | bsdtar x
+}
 
-cd ..
+_fetch_release_classic(){
+  printf "%s\n" "$1"
+  curl -s "https://api.github.com/repos/$1/releases/latest" \
+  | awk '/browser_download_url.*zip/{print $2}' \
+  | tr -d , \
+  | grep -e '[Cc]lassic' \
+  | xargs curl -L -# @- \
+  | bsdtar x
+}
 
-rm -fr BigWigs* Capping* ItemRack* WeakAuras* WowSimsExporter
-rm -fr CharacterStatsClassic ThreatClassic2 aux-addon TrinketMenu
-rm -fr Auctionator OmniCC* tullaRange
-rm -fr Grid2* unitscan
+_fetch_tag_gh(){
+  printf "%s\n" "$1"
+  curl -s "https://api.github.com/repos/$1/tags" \
+  | awk '/zipball_url/{print $2;exit;}' \
+  | tr -d , \
+  | xargs curl -L -# @- \
+  | bsdtar x
+}
 
-scripts/update.sh -t auto -u Resike      TrinketMenu
-scripts/update.sh -t zip  -u BigWigsMods BigWigs
-scripts/update.sh -t zip  -u BigWigsMods BigWigs_Classic
-scripts/update.sh -t zip  -u dfherr      ThreatClassic2
-scripts/update.sh -t zip  -u getov       CharacterStatsClassic
-scripts/update.sh -t zip  -u WeakAuras   WeakAuras2
-scripts/update.sh -t zip  -u michaelnpsp grid2 --filter=classic
-scripts/update.sh -t zip  -u tullamods   OmniCC
-#scripts/update.sh -t zip  -u tullamods   tullaRange
-#scripts/update.sh -t zip  -u BigWigsMods Capping
-#scripts/update.sh -t auto -u voidzone    gnosis
-#scripts/update.sh -t auto -u shirsig     unitscan
-#scripts/update.sh -t auto -u shirsig     aux-addon
-#scripts/update.sh -t auto -u Auctionator Auctionator
-
+# Fresh install
+rm -fr BigWigs_{Classic,Core,Options,Plugins}
 rm -fr BigWigs_{KhazAlgar,LiberationOfUndermine,NerubarPalace,ManaforgeOmega}
-rm -fr OmniCC_Config tullaRange_Config
+rm -fr Capping
+rm -fr ItemRack{Options,}
+rm -fr WeakAuras{Archive,ModelPaths,Options,Templates,}
+rm -fr WowSimsExporter
+rm -fr CharacterStatsClassic
+rm -fr ThreatClassic2
+rm -fr {OmniCC,tullaRange}{_Config,}
+rm -fr Cell
+rm -fr Skada
+rm -fr {TheMouseNest-,}Auctionator{-*,}
+rm -fr {shirsig-,}{aux-addon,unitscan}{-*,}
+rm -fr {voidzone-,}gnosis{-*,}
+rm -fr {Vysci-,}LFG-Bulletin-Board{-*,} LFGBulletinBoard
+rm -fr {Resike-,}TrinketMenu{-*,}
+
+# Backup Grid2 because sometimes there is no classic release in latest
+mkdir Grid2.bak
+mv Grid2{LDB,Options,RaidDebuffs,RaidDebuffsOptions,} Grid2.bak
+
+repos=(
+    'BigWigsMods/BigWigs'
+    'BigWigsMods/BigWigs_Classic'
+    'BigWigsMods/Capping'
+    'dfherr/ThreatClassic2'
+    'getov/CharacterStatsClassic'
+    'WeakAuras/WeakAuras2'
+    'tullamods/OmniCC'
+    'tullamods/tullaRange'
+    'zarnivoop/skada'
+    'enderneko/Cell'
+    'wowsims/exporter'
+)
+for x in ${repos[@]}; do _fetch_release_gh "$x"; done
+
+repos=(
+    'michaelnpsp/Grid2'
+    'Rottenbeer/ItemRack'
+)
+for x in ${repos[@]}; do _fetch_release_classic "$x"; done
+
+repos=(
+    'Resike/TrinketMenu'
+    'TheMouseNest/Auctionator'
+    'shirsig/unitscan'
+    'shirsig/aux-addon'
+    'voidzone/gnosis'
+    'Vysci/LFG-Bulletin-Board'
+)
+for x in ${repos[@]}; do _fetch_tag_gh "$x"; done
+
+# Move some stuff
+mv shirsig-aux-addon-* aux-addon
+mv shirsig-unitscan-* unitscan
+mv Resike-TrinketMenu-* TrinketMenu
+mv voidzone-gnosis-* Gnosis
+mv TheMouseNest-Auctionator-* Auctionator
+mv Vysci-LFG-Bulletin-Board-*/LFGBulletinBoard LFGBulletinBoard
+
+# Check Grid2 status
+if [ -d Grid2 ]; then rm -fr Grid2.bak; else mv Grid2.bak/* .; rmdir Grid2.bak; fi
+
+# Cleanup
+rm -fr Vysci-LFG-Bulletin-Board-*
+rm -fr BigWigs_{KhazAlgar,LiberationOfUndermine,NerubarPalace,ManaforgeOmega}
+rm -fr {OmniCC,tullaRange}_Config
 rm -f ../../../Data/indices/*
-
-exit 0
-
-fi
-
-while [[ "$#" -gt 0 ]]; do
-case "$1" in
-  -t)
-    RELEASETYPE="$2" && shift ;;
-  --filter=*)
-    EXTRAFILTER="${1#*=}"     ;;
-  -u)
-    REPOUSER="$2" && shift    ;;
-  *)
-    REPONAME="$1"             ;;
-esac
-shift
-done
-
-printf "url: %s/%s/%s\n" "https://github.com" "$REPOUSER" "$REPONAME"
-
-case "$RELEASETYPE" in
-  zip) 
-    curl -s "https://api.github.com/repos/$REPOUSER/$REPONAME/releases/latest" \
-    | awk '/browser_download_url.*'$EXTRAFILTER'.*zip/{print $2}' \
-    | xargs curl -L -# @- \
-    | bsdtar x
-    ;;
-  auto)
-    rm -fr "$REPONAME" && mkdir -p "$REPONAME"
-    curl -s "https://api.github.com/repos/$REPOUSER/$REPONAME/releases/latest" \
-    | awk '/tarball_url/{print $2}' \
-    | tr -d , \
-    | xargs curl -L -# @- \
-    | pigz -cd \
-    | tar -C "$REPONAME" --strip-components=1 -x
-    ;;
-esac

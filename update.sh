@@ -53,43 +53,43 @@ mkdir Grid2.bak
 mv Grid2{LDB,Options,RaidDebuffs,RaidDebuffsOptions,} Grid2.bak
 
 repos=(
-    'BigWigsMods/BigWigs'
-    'BigWigsMods/BigWigs_Classic'
-    'BigWigsMods/Capping'
-    'dfherr/ThreatClassic2'
-    'getov/CharacterStatsClassic'
-    'WeakAuras/WeakAuras2'
-    'tullamods/OmniCC'
-    'tullamods/tullaRange'
-    'zarnivoop/skada'
-    'enderneko/Cell'
-    'wowsims/exporter'
+  'BigWigsMods/BigWigs'
+  'BigWigsMods/BigWigs_Classic'
+  'BigWigsMods/Capping'
+  'dfherr/ThreatClassic2'
+  'enderneko/Cell'
+  'getov/CharacterStatsClassic'
+  'tullamods/OmniCC'
+  'tullamods/tullaRange'
+  'WeakAuras/WeakAuras2'
+# 'wowsims/exporter'
+  'zarnivoop/skada'
 )
 for x in ${repos[@]}; do _fetch_release_gh "$x"; done
 
 repos=(
-    'michaelnpsp/Grid2'
-    'Rottenbeer/ItemRack'
+  'michaelnpsp/Grid2'
+  'Rottenbeer/ItemRack'
 )
 for x in ${repos[@]}; do _fetch_release_classic "$x"; done
 
 repos=(
-    'Resike/TrinketMenu'
-    'TheMouseNest/Auctionator'
-    'shirsig/unitscan'
-    'shirsig/aux-addon'
-    'voidzone/gnosis'
-    'Vysci/LFG-Bulletin-Board'
+  'Resike/TrinketMenu'
+# 'shirsig/aux-addon'
+  'shirsig/unitscan'
+# 'TheMouseNest/Auctionator'
+# 'voidzone/gnosis'
+  'Vysci/LFG-Bulletin-Board'
 )
 for x in ${repos[@]}; do _fetch_tag_gh "$x"; done
 
 # Move some stuff
-mv shirsig-aux-addon-* aux-addon
-mv shirsig-unitscan-* unitscan
-mv Resike-TrinketMenu-* TrinketMenu
-mv voidzone-gnosis-* Gnosis
-mv TheMouseNest-Auctionator-* Auctionator
-mv Vysci-LFG-Bulletin-Board-*/LFGBulletinBoard LFGBulletinBoard
+#mv -f shirsig-aux-addon-* aux-addon
+mv -f shirsig-unitscan-* unitscan
+mv -f Resike-TrinketMenu-* TrinketMenu
+#mv -f voidzone-gnosis-* Gnosis
+#mv -f TheMouseNest-Auctionator-* Auctionator
+mv -f Vysci-LFG-Bulletin-Board-*/LFGBulletinBoard LFGBulletinBoard
 
 # Check Grid2 status
 if [ -d Grid2 ]; then rm -fr Grid2.bak; else mv Grid2.bak/* .; rmdir Grid2.bak; fi

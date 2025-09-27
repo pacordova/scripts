@@ -33,20 +33,12 @@ _fetch_tag_gh(){
 # Fresh install
 rm -fr BigWigs_{Classic,Core,Options,Plugins}
 rm -fr BigWigs_{KhazAlgar,LiberationOfUndermine,NerubarPalace,ManaforgeOmega}
-rm -fr Capping
-rm -fr ItemRack{Options,}
+rm -fr Capping Cell CharacterStatsClassic ThreatClassic2 WowSimsExporter
 rm -fr WeakAuras{Archive,ModelPaths,Options,Templates,}
-rm -fr WowSimsExporter
-rm -fr CharacterStatsClassic
-rm -fr ThreatClassic2
-rm -fr {OmniCC,tullaRange}{_Config,}
-rm -fr Cell
-rm -fr Skada
-rm -fr {TheMouseNest-,}Auctionator{-*,}
-rm -fr {shirsig-,}{aux-addon,unitscan}{-*,}
-rm -fr {voidzone-,}gnosis{-*,}
+rm -fr {OmniCC,tullaRange}{_Config,} {voidzone-,}gnosis{-*,}
+rm -fr {shirsig-,}{aux-addon,unitscan}{-*,} {TheMouseNest-,}Auctionator{-*,}
 rm -fr {Vysci-,}LFG-Bulletin-Board{-*,} LFGBulletinBoard
-rm -fr {Resike-,}TrinketMenu{-*,}
+rm -fr *{Recount,TrinketMenu}* ItemRack{Options,} Skada KiwiFarm
 
 # Backup Grid2 because sometimes there is no classic release in latest
 mkdir Grid2.bak
@@ -55,28 +47,30 @@ mv Grid2{LDB,Options,RaidDebuffs,RaidDebuffsOptions,} Grid2.bak
 repos=(
   'BigWigsMods/BigWigs'
   'BigWigsMods/BigWigs_Classic'
-  'BigWigsMods/Capping'
+# 'BigWigsMods/Capping'
   'dfherr/ThreatClassic2'
-  'enderneko/Cell'
+# 'enderneko/Cell'
   'getov/CharacterStatsClassic'
   'tullamods/OmniCC'
-  'tullamods/tullaRange'
+# 'tullamods/tullaRange'
   'WeakAuras/WeakAuras2'
 # 'wowsims/exporter'
-  'zarnivoop/skada'
+# 'zarnivoop/skada'
 )
 for x in ${repos[@]}; do _fetch_release_gh "$x"; done
 
 repos=(
   'michaelnpsp/Grid2'
-  'Rottenbeer/ItemRack'
+# 'michaelnpsp/KiwiFarm'
+# 'Rottenbeer/ItemRack'
 )
 for x in ${repos[@]}; do _fetch_release_classic "$x"; done
 
 repos=(
+  'Resike/Recount'
   'Resike/TrinketMenu'
 # 'shirsig/aux-addon'
-  'shirsig/unitscan'
+# 'shirsig/unitscan'
 # 'TheMouseNest/Auctionator'
 # 'voidzone/gnosis'
   'Vysci/LFG-Bulletin-Board'
@@ -87,8 +81,9 @@ for x in ${repos[@]}; do _fetch_tag_gh "$x"; done
 [ -d *"-aux-addon-"*    ] && mv *"-aux-addon-"*    aux-addon
 [ -d *"-unitscan-"*     ] && mv *"-unitscan-"*     unitscan
 [ -d *"-TrinketMenu-"*  ] && mv *"-TrinketMenu-"*  TrinketMenu
+[ -d *"-Recount-"*      ] && mv *"-Recount-"*      Recount
 [ -d *"-gnosis-"*       ] && mv *"-gnosis-"*       Gnosis
-[ -d *"-Auctionator-*"  ] && mv *"-Auctionator-"*  Auctionator
+[ -d *"-Auctionator-"*  ] && mv *"-Auctionator-"*  Auctionator
 [ -d */LFGBulletinBoard ] && mv */LFGBulletinBoard LFGBulletinBoard
 
 # If Grid2 successfully downloaded, delete backup, otherwise restore backup
